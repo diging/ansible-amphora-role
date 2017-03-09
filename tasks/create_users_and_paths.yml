@@ -1,0 +1,61 @@
+- name: create amphora user
+  user:
+    name: amphora
+    groups: webapps
+    state: present
+  become: yes
+- name: create project directory
+  file:
+    path: /var/opt/wsgi/amphora
+    state: directory
+    owner: amphora
+    group: webapps
+  become: yes
+- name: create app subdirectories
+  file:
+    path: /var/opt/wsgi/amphora/{{ item }}
+    state: directory
+    mode: "u=rwx,g=rwx,o="
+    owner: amphora
+    group: webapps
+  become: yes
+  with_items:
+    - run
+    - bin
+    - logs
+    - static
+- name: create media directory
+  file:
+    path: "{{ amphora_media_root }}"
+    state: directory
+    mode: "u=rwx,g=rwx,o="
+    owner: amphora
+    group: webapps
+  become: yes
+- name: create uploads directory
+  file:
+    path: "{{ amphora_media_root }}/uploads"
+    state: directory
+    mode: "u=rwx,g=rwx,o="
+    owner: amphora
+    group: webapps
+  become: yes
+- name: allow nginx to read/write
+  command: chcon -Rt httpd_sys_content_t /var/opt/wsgi/amphora
+  become: yes
+- name: write secret environment variables
+  template:
+    src: env_secrets.j2
+    dest: /var/opt/wsgi/amphora/env_secrets
+    owner: amphora
+    group: webapps
+    mode: "u=rwx,g=,o="
+  become: yes
+- name: create celery worker log file
+  file:
+    path: /var/opt/wsgi/amphora/logs/celery-worker.log
+    state: touch
+    owner: amphora
+    group: webapps
+    mode: "u=rw,g=rw,o=r"
+  become: yes

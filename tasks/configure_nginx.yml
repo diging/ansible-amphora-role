@@ -1,0 +1,15 @@
+- name: copy locations config for nginx
+  template:
+    src: amphora_locations.conf.j2
+    dest: /etc/nginx/conf.d/amphora_locations.conf
+  become: yes
+- name: copy upstream config for nginx
+  copy:
+    src: files/amphora_upstream.conf
+    dest: /etc/nginx/conf.d/amphora_upstream.conf
+  become: yes
+- name: restart nginx
+  systemd:
+    state: restarted
+    name: nginx
+  become: yes

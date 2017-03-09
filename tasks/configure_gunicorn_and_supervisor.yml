@@ -1,0 +1,39 @@
+- name: create gunicorn log file
+  file:
+    path: /var/opt/wsgi/amphora/logs/gunicorn_supervisor.log
+    state: touch
+    mode: "u=rw,g=rw,o=r"
+    owner: amphora
+    group: webapps
+  become: yes
+- name: copy gunicorn start script
+  copy:
+    src: files/gunicorn_start
+    dest: /var/opt/wsgi/amphora/bin/gunicorn_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: amphora
+    group: webapps
+  become: yes
+- name: copy celery start script
+  copy:
+    src: files/celery_start
+    dest: /var/opt/wsgi/amphora/bin/celery_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: amphora
+    group: webapps
+  become: yes
+- name: copy supervisord configuration for amphora
+  copy:
+    src: files/supervisord__amphora.conf
+    dest: /etc/supervisord.d/amphora.conf
+    mode: "u=rw,g=r,o=r"
+  become: yes
+- name: reread supervisor configuration
+  command: supervisorctl reread
+  become: yes
+- name: update supervisor with new configuration
+  command: supervisorctl update
+  become: yes
+- name: restart amphora gunicorn process
+  command: supervisorctl restart amphora
+  become: yes
