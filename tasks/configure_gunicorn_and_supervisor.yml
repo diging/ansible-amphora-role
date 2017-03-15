@@ -37,3 +37,6 @@
 - name: restart amphora gunicorn process
   command: supervisorctl restart amphora
   become: yes
+- name: restart amphora celery process
+  command: supervisorctl restart amphora-celery
+  become: yes
