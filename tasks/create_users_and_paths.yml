@@ -43,6 +43,10 @@
 - name: allow nginx to read/write
   command: chcon -Rt httpd_sys_content_t /var/opt/wsgi/amphora
   become: yes
+- name: allow nginx to read/write media (if possible)
+  command: "chcon -Rt httpd_sys_content_t {{ amphora_media_root }}"
+  become: yes
+  ignore_errors: yes
 - name: write secret environment variables
   template:
     src: env_secrets.j2
