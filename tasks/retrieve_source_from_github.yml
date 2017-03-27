@@ -21,5 +21,6 @@
     repo: git://github.com/diging/amphora.git
     dest: /var/opt/wsgi/amphora/amphora
     force: yes
+    version: develop
   become: yes
   become_user: amphora

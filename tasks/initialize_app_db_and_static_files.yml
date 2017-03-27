@@ -22,3 +22,4 @@
     chdir: /var/opt/wsgi/amphora/amphora
   become: yes
   become_user: amphora
+  no_log: true
