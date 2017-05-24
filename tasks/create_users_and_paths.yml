@@ -34,7 +34,7 @@
   become: yes
 - name: create uploads directory
   file:
-    path: "{{ amphora_media_root }}/uploads"
+    path: "{{ amphora_media_root }}/upload"
     state: directory
     mode: "u=rwx,g=rwx,o="
     owner: amphora
