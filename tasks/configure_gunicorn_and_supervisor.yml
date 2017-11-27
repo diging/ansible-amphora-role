@@ -14,10 +14,18 @@
     owner: amphora
     group: webapps
   become: yes
-- name: copy celery start script
+- name: copy celery worker start script
   copy:
-    src: files/celery_start
-    dest: /var/opt/wsgi/amphora/bin/celery_start
+    src: files/celery_worker_start
+    dest: /var/opt/wsgi/amphora/bin/celery_worker_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: amphora
+    group: webapps
+  become: yes
+- name: copy celery beat start script
+  copy:
+    src: files/celery_beat_start
+    dest: /var/opt/wsgi/amphora/bin/celery_beat_start
     mode: "u=rwx,g=rx,o=rx"
     owner: amphora
     group: webapps
@@ -37,6 +45,9 @@
 - name: restart amphora gunicorn process
   command: supervisorctl restart amphora
   become: yes
-- name: restart amphora celery process
-  command: supervisorctl restart amphora-celery
+- name: restart amphora celery worker process
+  command: supervisorctl restart amphora-celery-worker
+  become: yes
+- name: restart amphora celery beat process
+  command: supervisorctl restart amphora-celery-beat
   become: yes
