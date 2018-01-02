@@ -1,0 +1,18 @@
+#!/bin/bash
+
+NAME="amphora-celery-beat"                       # Name of the application
+DJANGODIR=/var/opt/wsgi/amphora/amphora          # Django project directory
+DJANGO_SETTINGS_MODULE=jars.settings             # which settings file should Django use
+DJANGO_CELERY_MODULE=jars.celery                 # WSGI module name
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DJANGODIR
+source ../env/bin/activate
+source ../env_secrets
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+
+exec ../env/bin/celery --app=${DJANGO_CELERY_MODULE}:app beat
