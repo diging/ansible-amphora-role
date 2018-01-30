@@ -15,4 +15,4 @@ export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 
 
-exec ../env/bin/celery --app=${DJANGO_CELERY_MODULE}:app beat
+exec ../env/bin/celery --app=${DJANGO_CELERY_MODULE}:app beat --pidfile="/var/opt/wsgi/amphora/run/celery-beat.pid"
