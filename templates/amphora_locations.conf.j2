@@ -3,7 +3,8 @@ location /amphora/static {
 }
 
 location /amphora/media {
-    alias   {{ amphora_media_root }};
+    internal;
+    alias   {{ amphora_media_root }}/;    # Ensure there's a trailing '/'.
 }
 
 

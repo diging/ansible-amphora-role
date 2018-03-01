@@ -1,2 +1,2 @@
-amphora_media_root: /home/amphora/media
+amphora_media_root: /home/amphora/media        # NO trailing '/'.
 giles_path: https://diging.asu.edu/geco-giles
